@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "timezone": "Asia/Shanghai",
+  "source_repository": "https://github.com/vllm-project/vllm",
+  "days": [
+    {
+      "date": "2026-10-13",
+      "lessons": [
+        {
+          "topic_id": "token-progress-scheduling",
+          "title": "prefill 和 decode 为什么能用同一套 token 进度调度",
+          "file": "daily/2026-10-13/01-token-progress-scheduling.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "def schedule(self, throttle_prefills: bool = False) -> SchedulerOutput:",
+              "line": 555
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "num_new_tokens = (",
+              "line": 650
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "scheduler_output = SchedulerOutput(",
+              "line": 1443
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "def _update_after_schedule(self, scheduler_output: SchedulerOutput) -> None:",
+              "line": 1565
+            }
+          ]
+        },
+        {
+          "topic_id": "kv-capacity-admission",
+          "title": "token 预算够用，为什么请求仍然进不了本轮",
+          "file": "daily/2026-10-13/02-kv-capacity-admission.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/core/kv_cache_manager.py",
+              "symbol": "def allocate_slots(",
+              "line": 371
+            },
+            {
+              "path": "vllm/v1/core/kv_cache_manager.py",
+              "symbol": "def get_computed_blocks(self, request: Request) -> tuple[KVCacheBlocks, int, int]:",
+              "line": 264
+            },
+            {
+              "path": "vllm/v1/core/kv_cache_manager.py",
+              "symbol": "num_blocks_to_allocate = self.coordinator.get_num_blocks_to_allocate(",
+              "line": 553
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "with record_function_or_nullcontext(\"schedule: allocate_slots\"):",
+              "line": 721
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "new_blocks = self.kv_cache_manager.allocate_slots(",
+              "line": 1195
+            },
+            {
+              "path": "vllm/v1/core/kv_cache_manager.py",
+              "symbol": "num_tokens_to_cache = min(",
+              "line": 602
+            }
+          ]
+        },
+        {
+          "topic_id": "output-state-reconciliation",
+          "title": "为什么模型算完以后，还必须回到调度器处理结果",
+          "file": "daily/2026-10-13/03-output-state-reconciliation.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/engine/core.py",
+              "symbol": "def step(self) -> tuple[dict[int, EngineCoreOutputs], bool]:",
+              "line": 634
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "def update_from_output(",
+              "line": 1900
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "for req_id, num_tokens_scheduled in num_scheduled_tokens.items():",
+              "line": 1948
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "num_draft_tokens = len(scheduled_spec_token_ids)",
+              "line": 1987
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "def _preempt_request(",
+              "line": 1520
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "def _update_request_with_output(",
+              "line": 2344
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if stopped:",
+              "line": 2086
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

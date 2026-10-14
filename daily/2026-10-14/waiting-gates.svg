@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="340" viewBox="0 0 720 340" role="img" aria-labelledby="title desc">
+<title id="title">等待队列中的跳过与停止</title><desc id="desc">候选 B 依赖未就绪时进入本轮临时跳过队列，并继续检查 C。B 分配 KV 失败时保持队首，停止本轮扫描。教学示意。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#52637a" stroke-width="1.5"/></marker></defs>
+<rect width="720" height="340" rx="20" fill="#f5f7fb"/>
+<g font-family="Arial, PingFang SC, sans-serif" fill="#17233a">
+<text x="28" y="40" font-size="23" font-weight="700">都是“B 不能运行”，控制流却不同</text>
+<g fill="none" stroke="#52637a" stroke-width="2" marker-end="url(#arrow)"><path d="M178 157H210V112H249"/><path d="M210 157V234H249"/><path d="M456 112H490"/><path d="M456 234H490"/></g>
+<rect x="28" y="123" width="150" height="68" rx="12" fill="#e9efff" stroke="#aabdf0"/>
+<rect x="251" y="78" width="205" height="69" rx="12" fill="#e9f5f1" stroke="#9acbbc"/>
+<rect x="251" y="200" width="205" height="69" rx="12" fill="#fff2df" stroke="#e3c396"/>
+<rect x="492" y="78" width="200" height="69" rx="12" fill="#e9f5f1" stroke="#9acbbc"/>
+<rect x="492" y="200" width="200" height="69" rx="12" fill="#fff2df" stroke="#e3c396"/>
+<g text-anchor="middle" font-size="18"><text x="103" y="151">队首 B</text><text x="103" y="177" font-size="15">后面还有 C</text><text x="353" y="105">依赖尚未就绪</text><text x="353" y="131" font-size="15">弹出 B，临时跳过</text><text x="592" y="105">continue</text><text x="592" y="131" font-size="15">继续检查 C</text><text x="353" y="227">KV 分配失败</text><text x="353" y="253" font-size="15">B 保持队首</text><text x="592" y="227">break</text><text x="592" y="253" font-size="15">停止本轮检查</text></g>
+<text x="28" y="310" font-size="15" fill="#52637a">教学示意：暂时跳过的 B 会并回 skipped_waiting；它没有被取消。</text>
+</g></svg>

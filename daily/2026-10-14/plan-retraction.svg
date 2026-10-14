@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+<title id="title">已入选请求的计划撤回</title><desc id="desc">priority 模式抢占本轮已入选的 A，清除计划中的 A 记录并归还预算，同时将 A 放回 waiting。教学示意，未派发计划的撤回不是 GPU 执行回滚。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#52637a" stroke-width="1.5"/></marker></defs>
+<rect width="720" height="360" rx="20" fill="#f5f7fb"/>
+<g font-family="Arial, PingFang SC, sans-serif" fill="#17233a">
+<text x="28" y="40" font-size="23" font-weight="700">先撤回 A 的本轮计划，再继续安排 B</text>
+<text x="28" y="70" font-size="16" fill="#52637a">限定：priority 模式，A 已入选且可立即回收</text>
+<path d="M320 161H391" fill="none" stroke="#52637a" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="28" y="95" width="292" height="129" rx="14" fill="#e9efff" stroke="#aabdf0"/>
+<rect x="393" y="95" width="299" height="129" rx="14" fill="#e9f5f1" stroke="#9acbbc"/>
+<text x="50" y="126" font-size="20" font-weight="700">撤回前：A 已占份额</text><text x="50" y="157" font-size="17">请求列表、token / block 映射</text><text x="50" y="185" font-size="17">draft / encoder 计划</text><text x="50" y="211" font-size="15" fill="#52637a">预算已扣减</text>
+<text x="415" y="126" font-size="20" font-weight="700">撤回后：去除 A 记录</text><text x="415" y="157" font-size="17">归还 token / input 预算</text><text x="415" y="185" font-size="17">归还本轮 encoder 计算份额</text><text x="415" y="211" font-size="15" fill="#52637a">重试 B 的 KV 分配</text>
+<path d="M174 225V248" fill="none" stroke="#52637a" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="28" y="250" width="664" height="49" rx="12" fill="#f0eafa" stroke="#c4aedf"/>
+<text x="48" y="281" font-size="18">A → PREEMPTED → waiting　　计算进度重置，已接受历史保留</text>
+<text x="28" y="333" font-size="15" fill="#52637a">教学示意：撤回尚未派发的计划；早先在途 GPU 工作另有生命周期约束。</text>
+</g></svg>

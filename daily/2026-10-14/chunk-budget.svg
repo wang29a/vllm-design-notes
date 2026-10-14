@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="310" viewBox="0 0 720 310" role="img" aria-labelledby="title desc">
+<title id="title">单轮粒度改变后来请求的机会</title><desc id="desc">预算为八，先处理 A 后处理 B，再尝试 C。cap 为四时份额为一、四、三；无 cap 时为一、七、零。教学示意。</desc>
+<rect width="720" height="310" rx="20" fill="#f5f7fb"/>
+<g font-family="Arial, PingFang SC, sans-serif" fill="#17233a">
+<text x="28" y="40" font-size="23" font-weight="700">同样八个位置，单轮粒度改变分配</text>
+<text x="28" y="70" font-size="16" fill="#52637a">running: A（decode）→ B（长 prompt）　waiting: C</text>
+<text x="28" y="111" font-size="18">cap = 4</text><text x="28" y="189" font-size="18">cap = 0</text>
+<rect x="140" y="88" width="64" height="42" rx="6" fill="#bdd0fb"/><rect x="204" y="88" width="256" height="42" fill="#b3ddd0"/><rect x="460" y="88" width="192" height="42" rx="6" fill="#d7c4eb"/>
+<rect x="140" y="166" width="64" height="42" rx="6" fill="#bdd0fb"/><rect x="204" y="166" width="448" height="42" rx="6" fill="#b3ddd0"/>
+<g font-size="19" text-anchor="middle"><text x="172" y="116">A: 1</text><text x="332" y="116">B: 4</text><text x="556" y="116">C: 3</text><text x="172" y="194">A: 1</text><text x="428" y="194">B: 7</text></g>
+<text x="460" y="151" font-size="15" fill="#52637a">C 可进入本轮候选计划</text><text x="460" y="229" font-size="15" fill="#52637a">C 没有剩余 token 预算</text>
+<text x="28" y="271" font-size="15" fill="#52637a">教学示意：两种预算相等、无 draft、KV 充足；每格不是相同计算时间。</text>
+</g></svg>

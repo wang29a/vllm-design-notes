@@ -122,6 +122,146 @@
           ]
         }
       ]
+    },
+    {
+      "date": "2026-10-14",
+      "lessons": [
+        {
+          "topic_id": "chunk-granularity-and-budget",
+          "title": "长 prompt 怎样分块，为什么仍然会挤占后来的请求",
+          "file": "daily/2026-10-14/01-chunk-granularity-and-budget.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "while req_index < len(self.running) and token_budget > 0:",
+              "line": 606
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if 0 < self.scheduler_config.long_prefill_token_threshold < num_new_tokens:",
+              "line": 655
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "request_token_budget = min(token_budget, input_budget - draft_slots)",
+              "line": 1058
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if (",
+              "line": 1101
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "self.max_num_scheduled_tokens = (",
+              "line": 132
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "num_scheduled_tokens[request_id] = num_new_tokens",
+              "line": 800
+            }
+          ]
+        },
+        {
+          "topic_id": "waiting-skip-or-break",
+          "title": "排在队首的请求，为什么有时被跳过，有时挡住后面的人",
+          "file": "daily/2026-10-14/02-waiting-skip-or-break.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/core/sched/request_queue.py",
+              "symbol": "class FCFSRequestQueue(deque[Request], RequestQueue):",
+              "line": 75
+            },
+            {
+              "path": "vllm/v1/request.py",
+              "symbol": "def __lt__(self, other: \"Request\") -> bool:",
+              "line": 353
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "def _select_waiting_queue_for_scheduling(self) -> RequestQueue | None:",
+              "line": 2314
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "def _try_promote_blocked_waiting_request(self, request: Request) -> bool:",
+              "line": 3010
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if self._is_blocked_waiting_status(",
+              "line": 868
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if step_skipped_waiting:",
+              "line": 1327
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if new_blocks is None:",
+              "line": 1209
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "num_running = len(self.running) + self.num_waiting_for_streaming_input",
+              "line": 857
+            }
+          ]
+        },
+        {
+          "topic_id": "preemption-plan-retraction",
+          "title": "抢占为什么还要撤回已经写进本轮的计划",
+          "file": "daily/2026-10-14/03-preemption-plan-retraction.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if self.policy == SchedulingPolicy.PRIORITY:",
+              "line": 741
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if not self._request_blocks_can_be_freed(preempted_req):",
+              "line": 750
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "def _request_blocks_can_be_freed(self, request: Request) -> bool:",
+              "line": 2603
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if preempted_req in scheduled_running_reqs:",
+              "line": 759
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "def _preempt_request(",
+              "line": 1520
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if not preempted_reqs and self._pause_state == PauseState.UNPAUSED:",
+              "line": 849
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "total_num_scheduled_tokens = sum(num_scheduled_tokens.values())",
+              "line": 1336
+            }
+          ]
+        }
+      ]
     }
   ]
 }

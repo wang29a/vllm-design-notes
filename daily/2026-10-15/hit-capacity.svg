@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="370" viewBox="0 0 720 370" role="img" aria-labelledby="title desc">
+<title id="title">命中块采用过程的 free 容量变化</title><desc id="desc">开始 free 队列含缓存块 7、9 和可分配块 12。查找不增加引用；touch 7、9 后只剩 12；再分配 12 后 free 为零。教学示意。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#52637a" stroke-width="1.5"/></marker></defs>
+<rect width="720" height="370" rx="20" fill="#f5f7fb"/>
+<g font-family="Arial, PingFang SC, sans-serif" fill="#17233a">
+<text x="28" y="40" font-size="23" font-weight="700">命中不是零容量成本：先保护，再新增</text>
+<text x="28" y="70" font-size="16" fill="#52637a">单组完整块；无窗口、CoW、额外预留；B 命中 7、9</text>
+<g fill="none" stroke="#52637a" stroke-width="2" marker-end="url(#arrow)"><path d="M228 165H257"/><path d="M460 165H489"/></g>
+<rect x="28" y="102" width="200" height="125" rx="14" fill="#fff2df" stroke="#e3c396"/>
+<rect x="259" y="102" width="201" height="125" rx="14" fill="#e9efff" stroke="#aabdf0"/>
+<rect x="491" y="102" width="201" height="125" rx="14" fill="#e9f5f1" stroke="#9acbbc"/>
+<g text-anchor="middle"><g font-size="20" font-weight="700"><text x="128" y="135">查找后：free = 3</text><text x="359" y="135">touch 后：free = 1</text><text x="591" y="135">新增后：free = 0</text></g>
+<g font-size="18"><text x="128" y="169">队列：[7, 9, 12]</text><text x="128" y="199">7、9 的 ref = 0</text><text x="359" y="169">队列：[12]</text><text x="359" y="199">7、9 的 ref = 1</text><text x="591" y="169">队列：空</text><text x="591" y="199">12 的 ref = 1</text></g></g>
+<rect x="28" y="250" width="664" height="53" rx="12" fill="#f0eafa" stroke="#c4aedf"/>
+<text x="48" y="283" font-size="20">容量需求 = 1 块新增 + 2 块从可淘汰转为受保护 = 3</text>
+<text x="28" y="340" font-size="15" fill="#52637a">教学示意：触碰已有受保护块只增引用，不再消耗一份 free 容量。</text>
+</g></svg>

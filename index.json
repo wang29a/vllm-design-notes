@@ -262,6 +262,136 @@
           ]
         }
       ]
+    },
+    {
+      "date": "2026-10-15",
+      "lessons": [
+        {
+          "topic_id": "prefix-cache-identity",
+          "title": "相同的一块 token，为什么不一定命中相同的 KV",
+          "file": "daily/2026-10-15/01-prefix-cache-identity.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/core/kv_cache_utils.py",
+              "symbol": "def hash_block_tokens(",
+              "line": 649
+            },
+            {
+              "path": "vllm/v1/core/kv_cache_utils.py",
+              "symbol": "def get_request_block_hasher(",
+              "line": 826
+            },
+            {
+              "path": "vllm/v1/core/kv_cache_utils.py",
+              "symbol": "def generate_block_hash_extra_keys(",
+              "line": 610
+            },
+            {
+              "path": "vllm/v1/core/kv_cache_utils.py",
+              "symbol": "def make_block_hash_with_group_id(",
+              "line": 74
+            },
+            {
+              "path": "vllm/v1/core/block_pool.py",
+              "symbol": "def get_cached_block(",
+              "line": 196
+            },
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "for block_hash in itertools.islice(full_block_hashes, max_length // block_size):",
+              "line": 796
+            }
+          ]
+        },
+        {
+          "topic_id": "cache-hit-reference-adoption",
+          "title": "命中两块、只新增一块，为什么可能需要三块可用容量",
+          "file": "daily/2026-10-15/02-cache-hit-reference-adoption.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/core/kv_cache_utils.py",
+              "symbol": "class KVCacheBlock:",
+              "line": 176
+            },
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "def add_local_computed_blocks(",
+              "line": 267
+            },
+            {
+              "path": "vllm/v1/core/block_pool.py",
+              "symbol": "def touch(self, blocks: Sequence[KVCacheBlock]) -> None:",
+              "line": 746
+            },
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "def get_num_blocks_to_allocate(",
+              "line": 180
+            },
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "def _get_num_evictable_blocks(cls, blocks: Sequence[KVCacheBlock]):",
+              "line": 165
+            },
+            {
+              "path": "vllm/v1/core/kv_cache_manager.py",
+              "symbol": "available_blocks = self.block_pool.get_num_free_blocks() - reserved_blocks",
+              "line": 566
+            }
+          ]
+        },
+        {
+          "topic_id": "free-cache-and-eviction",
+          "title": "请求释放 KV 后，为什么缓存仍能命中，直到块被重新分配",
+          "file": "daily/2026-10-15/03-free-cache-and-eviction.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "def free(self, request_id: str) -> None:",
+              "line": 578
+            },
+            {
+              "path": "vllm/v1/core/block_pool.py",
+              "symbol": "def free_blocks(self, ordered_blocks: Iterable[KVCacheBlock]) -> None:",
+              "line": 768
+            },
+            {
+              "path": "vllm/v1/core/kv_cache_utils.py",
+              "symbol": "class FreeKVCacheBlockQueue:",
+              "line": 246
+            },
+            {
+              "path": "vllm/v1/core/block_pool.py",
+              "symbol": "def get_new_blocks(self, num_blocks: int) -> list[KVCacheBlock]:",
+              "line": 660
+            },
+            {
+              "path": "vllm/v1/core/block_pool.py",
+              "symbol": "def _remove_cached_block_hashes(",
+              "line": 584
+            },
+            {
+              "path": "vllm/v1/core/block_pool.py",
+              "symbol": "def insert(self, key: BlockHashWithGroupId, block: KVCacheBlock) -> None:",
+              "line": 83
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "def _free_request_blocks(self, request: Request):",
+              "line": 2610
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -38,6 +38,7 @@ vLLM 持续接收不同长度的请求，组织它们竞争计算预算和有限
 
 | 日期 | 三个相连的问题 | 源码版本 |
 | --- | --- | --- |
+| 2026-10-17 | [部分命中的有效边界](daily/2026-10-17/01-partial-prefix-hit-boundary.md) → [尾块写时复制](daily/2026-10-17/02-partial-tail-copy-on-write.md) → [GPU 复制与回收协议](daily/2026-10-17/03-cow-copy-and-reclamation.md) | [`04c1f4a40796`](https://github.com/vllm-project/vllm/tree/04c1f4a407962a37d01b573f3a2aba91dd2ed3a9) |
 | 2026-10-15 | [前缀缓存的身份](daily/2026-10-15/01-prefix-cache-identity.md) → [命中块的引用与容量](daily/2026-10-15/02-cache-hit-reference-adoption.md) → [释放与淘汰的边界](daily/2026-10-15/03-free-cache-and-eviction.md) | [`04c1f4a40796`](https://github.com/vllm-project/vllm/tree/04c1f4a407962a37d01b573f3a2aba91dd2ed3a9) |
 | 2026-10-14 | [分块粒度与双预算](daily/2026-10-14/01-chunk-granularity-and-budget.md) → [等待队列的跳过与停止](daily/2026-10-14/02-waiting-skip-or-break.md) → [抢占时撤回计划](daily/2026-10-14/03-preemption-plan-retraction.md) | [`04c1f4a40796`](https://github.com/vllm-project/vllm/tree/04c1f4a407962a37d01b573f3a2aba91dd2ed3a9) |
 | 2026-10-13 | [token 进度](daily/2026-10-13/01-token-progress-scheduling.md) → [KV 容量准入](daily/2026-10-13/02-kv-capacity-admission.md) → [结果状态修正](daily/2026-10-13/03-output-state-reconciliation.md) | [`04c1f4a40796`](https://github.com/vllm-project/vllm/tree/04c1f4a407962a37d01b573f3a2aba91dd2ed3a9) |

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="370" viewBox="0 0 720 370" role="img" aria-labelledby="title desc">
+<title id="title">部分命中尾块的写时复制</title><desc id="desc">B 的尾块由源 9 改到私有块 12。刚完成 apply_cow 时，源块保留 A 与复制引用，目的块保留 B 与复制引用。教学示意。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#52637a" stroke-width="1.5"/></marker></defs>
+<rect width="720" height="370" rx="20" fill="#f5f7fb"/>
+<g font-family="Arial, PingFang SC, sans-serif" fill="#17233a">
+<text x="28" y="40" font-size="23" font-weight="700">有效前缀可共享，未来尾部写入归 B 私有</text>
+<text x="28" y="70" font-size="16" fill="#52637a">逻辑命中为 6，B 的下一位置仍在第二个物理块中</text>
+<path d="M304 123H409" fill="none" stroke="#52637a" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="28" y="94" width="276" height="58" rx="12" fill="#e9efff" stroke="#aabdf0"/>
+<rect x="411" y="94" width="281" height="58" rx="12" fill="#e9f5f1" stroke="#9acbbc"/>
+<g text-anchor="middle" font-size="21" font-weight="700"><text x="166" y="130">B 块表：[7, 9]</text><text x="551" y="130">B 块表：[7, 12]</text></g>
+<rect x="28" y="186" width="307" height="92" rx="12" fill="#fff2df" stroke="#e3c396"/>
+<rect x="385" y="186" width="307" height="92" rx="12" fill="#f0eafa" stroke="#c4aedf"/>
+<g text-anchor="middle"><text x="181" y="217" font-size="20" font-weight="700">源 9：ref = 2</text><text x="538" y="217" font-size="20" font-weight="700">目的 12：ref = 2</text><text x="181" y="249" font-size="18">A 的持有 + 复制保留</text><text x="538" y="249" font-size="18">B 的持有 + 复制保留</text></g>
+<text x="28" y="310" font-size="18">登记待复制端点 9 → 12；这里尚未执行 GPU 数据拷贝</text>
+<text x="28" y="349" font-size="14" fill="#52637a">教学示意：显示 apply_cow 刚完成、保留引用尚未交还时的计数。</text>
+</g></svg>

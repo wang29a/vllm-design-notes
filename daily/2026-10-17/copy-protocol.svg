@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="390" viewBox="0 0 720 390" role="img" aria-labelledby="title desc">
+<title id="title">复制计划与延迟回收边界</title><desc id="desc">CPU 发送复制端点，worker 有条件清零新块后复制，再进入模型工作。仅当 defer_block_free 为真且步骤边界未满足时，端点保留引用延迟到对应输出处理。教学示意。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#52637a" stroke-width="1.5"/></marker></defs>
+<rect width="720" height="390" rx="20" fill="#f5f7fb"/>
+<g font-family="Arial, PingFang SC, sans-serif" fill="#17233a">
+<text x="28" y="40" font-size="23" font-weight="700">块表、复制与回收，分别越过不同边界</text>
+<g fill="none" stroke="#52637a" stroke-width="2" marker-end="url(#arrow)"><path d="M178 129H197"/><path d="M348 129H367"/><path d="M518 129H537"/><path d="M248 294H300"/><path d="M472 294H525"/></g>
+<rect x="28" y="90" width="150" height="83" rx="12" fill="#e9efff" stroke="#aabdf0"/>
+<rect x="198" y="90" width="150" height="83" rx="12" fill="#fff2df" stroke="#e3c396"/>
+<rect x="368" y="90" width="150" height="83" rx="12" fill="#e9f5f1" stroke="#9acbbc"/>
+<rect x="538" y="90" width="154" height="83" rx="12" fill="#e9f5f1" stroke="#9acbbc"/>
+<g text-anchor="middle" font-size="20" font-weight="700"><text x="103" y="121">CPU 计划</text><text x="273" y="121">条件清零</text><text x="443" y="121">块复制</text><text x="615" y="121">模型工作</text></g>
+<g text-anchor="middle" font-size="17"><text x="103" y="151">端点 9 → 12</text><text x="273" y="151">仅在需要时</text><text x="443" y="151">块视图赋值</text><text x="615" y="151">消费有效前缀</text></g>
+<text x="28" y="219" font-size="18" font-weight="700">以下仅限定 defer_block_free = true，且 fence 尚未满足</text>
+<rect x="28" y="254" width="220" height="80" rx="12" fill="#f0eafa" stroke="#c4aedf"/>
+<rect x="302" y="254" width="170" height="80" rx="12" fill="#f0eafa" stroke="#c4aedf"/>
+<rect x="527" y="254" width="165" height="80" rx="12" fill="#f0eafa" stroke="#c4aedf"/>
+<g text-anchor="middle" font-size="18"><text x="138" y="286">端点保留引用</text><text x="138" y="313">关联非空步骤 fence</text><text x="387" y="286">处理步骤输出</text><text x="387" y="313">推进完成边界</text><text x="609" y="286">边界满足</text><text x="609" y="313">归还保留引用</text></g>
+<text x="28" y="368" font-size="14" fill="#52637a">教学示意：箭头表示依赖协议，不是实际 GPU trace 或跨所有配置的全局屏障。</text>
+</g></svg>

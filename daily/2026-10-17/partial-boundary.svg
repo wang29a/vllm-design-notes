@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="340" viewBox="0 0 720 340" role="img" aria-labelledby="title desc">
+<title id="title">逻辑命中长度不等于物理块容量</title><desc id="desc">示例 full-attention 组物理块大小四、hash 粒度二。两个物理块 7 和 9 覆盖八个槽，缓存命中只承诺前六个位置。教学示意。</desc>
+<rect width="720" height="340" rx="20" fill="#f5f7fb"/>
+<g font-family="Arial, PingFang SC, sans-serif" fill="#17233a">
+<text x="28" y="40" font-size="23" font-weight="700">两块物理空间，不等于八个有效命中位置</text>
+<text x="28" y="70" font-size="16" fill="#52637a">仅画合法混合布局中的一个组；block = 4，hash = 2</text>
+<text x="45" y="111" font-size="18">物理块 7</text><text x="365" y="111" font-size="18">物理块 9</text>
+<rect x="44" y="129" width="300" height="63" rx="8" fill="#bdd0fb" stroke="#91abe3"/>
+<rect x="365" y="129" width="150" height="63" rx="8" fill="#b3ddd0" stroke="#88baa9"/>
+<rect x="515" y="129" width="150" height="63" rx="8" fill="#fff" stroke="#b1bccb" stroke-dasharray="5 4"/>
+<g stroke="#f5f7fb" stroke-width="2"><path d="M119 129V192M194 129V192M269 129V192M440 129V192M590 129V192"/></g>
+<g text-anchor="middle" font-size="20"><text x="81" y="167">0</text><text x="156" y="167">1</text><text x="231" y="167">2</text><text x="306" y="167">3</text><text x="402" y="167">4</text><text x="477" y="167">5</text><text x="552" y="167">6</text><text x="627" y="167">7</text></g>
+<text x="44" y="223" font-size="18">命中返回：[7, 9] + hit_length = 6</text>
+<text x="515" y="223" font-size="16" fill="#52637a">此处未承诺有效 KV</text>
+<rect x="28" y="247" width="664" height="44" rx="12" fill="#f0eafa" stroke="#c4aedf"/>
+<text x="48" y="275" font-size="18">尾条目指向已有物理块；注册身份时没有创建“半块”</text>
+<text x="28" y="320" font-size="14" fill="#52637a">教学示意：需先启用兼容的 partial-hash-hit 路径；不是默认配置运行轨迹。</text>
+</g></svg>

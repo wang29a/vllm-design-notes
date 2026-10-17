@@ -392,6 +392,141 @@
           ]
         }
       ]
+    },
+    {
+      "date": "2026-10-17",
+      "lessons": [
+        {
+          "topic_id": "partial-prefix-hit-boundary",
+          "title": "前缀只命中六个 token，为什么可以返回两个四槽物理块",
+          "file": "daily/2026-10-17/01-partial-prefix-hit-boundary.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/core/kv_cache_coordinator.py",
+              "symbol": "self.enable_partial_hash_hits = (",
+              "line": 693
+            },
+            {
+              "path": "vllm/v1/core/kv_cache_coordinator.py",
+              "symbol": "def _cache_hit_alignment_tokens(self) -> int:",
+              "line": 719
+            },
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "def _cache_partial_tail_block(",
+              "line": 861
+            },
+            {
+              "path": "vllm/v1/core/block_pool.py",
+              "symbol": "def cache_partial_block(",
+              "line": 447
+            },
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "for block_hash in itertools.islice(full_block_hashes, max_length // block_size):",
+              "line": 796
+            },
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "for fine_idx in range(max_partial_idx - 1, first_partial_idx - 1, -1):",
+              "line": 816
+            },
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "hit_length -= hit_length % alignment_tokens",
+              "line": 836
+            }
+          ]
+        },
+        {
+          "topic_id": "partial-tail-copy-on-write",
+          "title": "命中的尾块还有空位，为什么仍要分配私有副本",
+          "file": "daily/2026-10-17/02-partial-tail-copy-on-write.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "def _has_partial_local_hit(",
+              "line": 168
+            },
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "if self._has_partial_local_hit(new_computed_blocks, num_local_computed_tokens):",
+              "line": 318
+            },
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "if request_id in self._partial_hit_reqs:",
+              "line": 385
+            },
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "def _apply_cow(",
+              "line": 451
+            },
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "if self._has_partial_local_hit(new_computed_blocks, num_local_computed_tokens):",
+              "line": 261
+            },
+            {
+              "path": "vllm/v1/core/single_type_kv_cache_manager.py",
+              "symbol": "req_blocks[block_idx] = cow_block",
+              "line": 469
+            }
+          ]
+        },
+        {
+          "topic_id": "cow-copy-and-reclamation",
+          "title": "CPU 已经换好块表，旧 KV 怎样到达 GPU 的私有尾块",
+          "file": "daily/2026-10-17/03-cow-copy-and-reclamation.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/core/kv_cache_manager.py",
+              "symbol": "def take_kv_cache_block_copies(",
+              "line": 888
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "kv_cache_block_copies, cow_retained_blocks = (",
+              "line": 1416
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "if scheduler_output.new_block_ids_to_zero:",
+              "line": 1223
+            },
+            {
+              "path": "vllm/v1/worker/gpu/model_runner.py",
+              "symbol": "if scheduler_output.new_block_ids_to_zero:",
+              "line": 1192
+            },
+            {
+              "path": "vllm/v1/worker/utils.py",
+              "symbol": "def copy_kv_cache_blocks_inplace(",
+              "line": 685
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "def _free_cow_retained_blocks(",
+              "line": 2621
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if self.defer_block_free and scheduler_output.total_num_scheduled_tokens > 0:",
+              "line": 1917
+            }
+          ]
+        }
+      ]
     }
   ]
 }

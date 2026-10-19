@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="365" viewBox="0 0 720 365" role="img" aria-labelledby="title desc">
+<title id="title">按请求进度展平本轮 query</title><desc id="desc">worker 请求行顺序为 B、C，安排数为二、一。三个 query 的归属为 B、B、C，逻辑位置为六、七、三，区段边界为零、二、三。教学示意。</desc>
+<rect width="720" height="365" rx="20" fill="#f5f7fb"/>
+<g font-family="Arial, PingFang SC, sans-serif" fill="#17233a">
+<text x="28" y="40" font-size="23" font-weight="700">请求本轮工作量 [2, 1] → 三行连续 query</text>
+<text x="28" y="70" font-size="16" fill="#52637a">worker 行顺序 [B, C]；已有进度 [6, 3]</text>
+<rect x="28" y="111" width="664" height="48" rx="8" fill="#e9efff"/>
+<rect x="28" y="164" width="664" height="48" rx="8" fill="#e9efff"/>
+<rect x="28" y="217" width="664" height="48" rx="8" fill="#e9f5f1"/>
+<g text-anchor="middle" font-size="17" fill="#52637a"><text x="93" y="100">扁平行号</text><text x="220" y="100">请求归属</text><text x="376" y="100">局部 query_pos</text><text x="572" y="100">逻辑 position</text></g>
+<g text-anchor="middle" font-size="21"><text x="93" y="142">0</text><text x="220" y="142">B</text><text x="376" y="142">0</text><text x="572" y="142">6</text><text x="93" y="195">1</text><text x="220" y="195">B</text><text x="376" y="195">1</text><text x="572" y="195">7</text><text x="93" y="248">2</text><text x="220" y="248">C</text><text x="376" y="248">0</text><text x="572" y="248">3</text></g>
+<text x="28" y="304" font-size="19">query_start_loc = [0, 2, 3]　　B: [0, 2)　C: [2, 3)</text>
+<text x="28" y="343" font-size="14" fill="#52637a">教学示意：仅画有效 query，不含 graph padding；未画进本轮 query 的历史仍在 KV 中。</text>
+</g></svg>

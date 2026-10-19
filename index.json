@@ -527,6 +527,141 @@
           ]
         }
       ]
+    },
+    {
+      "date": "2026-10-19",
+      "lessons": [
+        {
+          "topic_id": "packed-query-inputs",
+          "title": "两个进度不同的请求，怎样变成同一轮连续输入",
+          "file": "daily/2026-10-19/01-packed-query-inputs.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "tokens = [scheduler_output.num_scheduled_tokens[i] for i in req_ids]",
+              "line": 4227
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "req_indices = np.repeat(self.arange_np[:num_reqs], num_scheduled_tokens)",
+              "line": 1977
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "positions_np = (",
+              "line": 1986
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "token_indices = (",
+              "line": 2000
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "self.query_start_loc.np[0] = 0",
+              "line": 2062
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "self.positions[:total_num_scheduled_tokens] = (",
+              "line": 2177
+            }
+          ]
+        },
+        {
+          "topic_id": "logical-position-to-kv-slot",
+          "title": "展平输入的第三行，为什么要写进 KV 槽 23",
+          "file": "daily/2026-10-19/02-logical-position-to-kv-slot.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/worker/block_table.py",
+              "symbol": "def compute_slot_mapping(",
+              "line": 201
+            },
+            {
+              "path": "vllm/v1/worker/block_table.py",
+              "symbol": "block_numbers = tl.load(",
+              "line": 470
+            },
+            {
+              "path": "vllm/v1/worker/block_table.py",
+              "symbol": "slot_offsets = local_block_offsets % block_size",
+              "line": 475
+            },
+            {
+              "path": "vllm/v1/worker/block_table.py",
+              "symbol": "if kernel_block_size == block_size:",
+              "line": 91
+            },
+            {
+              "path": "vllm/v1/worker/block_table.py",
+              "symbol": "kernel_block_ids = (",
+              "line": 262
+            },
+            {
+              "path": "vllm/v1/worker/block_table.py",
+              "symbol": "if self.slot_mapping_mode == SlotMappingMode.NONE:",
+              "line": 208
+            },
+            {
+              "path": "vllm/v1/attention/backends/triton_attn.py",
+              "symbol": "def do_kv_cache_update(",
+              "line": 764
+            }
+          ]
+        },
+        {
+          "topic_id": "query-context-and-causal-boundaries",
+          "title": "本轮只有三个 query，attention 为什么还要知道八个和四个 KV",
+          "file": "daily/2026-10-19/03-query-context-and-causal-boundaries.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "self.seq_lens[:num_reqs] = (",
+              "line": 2181
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "cm_base = CommonAttentionMetadata(",
+              "line": 2428
+            },
+            {
+              "path": "vllm/v1/attention/backends/triton_attn.py",
+              "symbol": "unified_attention(",
+              "line": 663
+            },
+            {
+              "path": "vllm/v1/attention/ops/triton_unified_attention.py",
+              "symbol": "context_len = seq_len - cur_batch_query_len",
+              "line": 389
+            },
+            {
+              "path": "vllm/v1/attention/ops/triton_unified_attention.py",
+              "symbol": "query_abs_pos = context_len + query_pos[:, None]",
+              "line": 519
+            },
+            {
+              "path": "vllm/v1/attention/ops/triton_attention_helpers.py",
+              "symbol": "seq_mask = seq_offset[None, :] <= query_abs_pos",
+              "line": 355
+            },
+            {
+              "path": "vllm/v1/attention/ops/triton_unified_attention.py",
+              "symbol": "physical_block_idx = tl.load(",
+              "line": 429
+            }
+          ]
+        }
+      ]
     }
   ]
 }

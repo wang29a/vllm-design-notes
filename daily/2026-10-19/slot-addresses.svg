@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+<title id="title">逻辑位置到 KV 物理槽</title><desc id="desc">B 的块表为七、十二，C 为五。块大小四时，B 的位置六、七对应槽五十、五十一；C 的位置三对应槽二十三。教学示意。</desc>
+<rect width="720" height="360" rx="20" fill="#f5f7fb"/>
+<g font-family="Arial, PingFang SC, sans-serif" fill="#17233a">
+<text x="28" y="40" font-size="23" font-weight="700">同一轮的连续 query，写入不同物理槽</text>
+<text x="28" y="70" font-size="16" fill="#52637a">B 块表 [7, 12]，C 块表 [5]；分配块与 kernel 块都取 4</text>
+<g text-anchor="middle" font-size="17" fill="#52637a"><text x="81" y="110">query 行</text><text x="210" y="110">请求 / 位置</text><text x="376" y="110">物理块 / 偏移</text><text x="576" y="110">物理 slot</text></g>
+<rect x="28" y="121" width="664" height="46" rx="8" fill="#e9efff"/>
+<rect x="28" y="175" width="664" height="46" rx="8" fill="#e9efff"/>
+<rect x="28" y="229" width="664" height="46" rx="8" fill="#e9f5f1"/>
+<g text-anchor="middle" font-size="20"><text x="81" y="152">0</text><text x="210" y="152">B / 6</text><text x="376" y="152">12 / 2</text><text x="576" y="152">12 × 4 + 2 = 50</text><text x="81" y="206">1</text><text x="210" y="206">B / 7</text><text x="376" y="206">12 / 3</text><text x="576" y="206">12 × 4 + 3 = 51</text><text x="81" y="260">2</text><text x="210" y="260">C / 3</text><text x="376" y="260">5 / 3</text><text x="576" y="260">5 × 4 + 3 = 23</text></g>
+<text x="28" y="311" font-size="19">slot_mapping = [50, 51, 23]，不是 query 行号或字节地址</text>
+<text x="28" y="341" font-size="14" fill="#52637a">教学手算：单 rank、无块拆分；数值不代表真实后端配置或 kernel 验证结果。</text>
+</g></svg>

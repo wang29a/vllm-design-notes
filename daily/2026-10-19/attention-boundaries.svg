@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+<title id="title">请求边界与 query 因果边界</title><desc id="desc">B 的两个 query 分别看 B 的前七和前八个 KV；C 的 query 只看 C 的前四个 KV。图为逻辑可见集合的教学示意，不是物化的实际掩码。</desc>
+<rect width="720" height="360" rx="20" fill="#f5f7fb"/>
+<g font-family="Arial, PingFang SC, sans-serif" fill="#17233a">
+<text x="28" y="40" font-size="23" font-weight="700">本轮三个 query，KV 长度分别为 8、4</text>
+<text x="28" y="70" font-size="16" fill="#52637a">query_start_loc = [0, 2, 3]；普通 decoder causal attention</text>
+<g font-size="18" text-anchor="middle"><text x="318" y="111">B 的逻辑 KV 位置</text><text x="588" y="111">C 的逻辑 KV 位置</text></g>
+<g font-size="15" text-anchor="middle" fill="#52637a"><text x="171" y="140">0</text><text x="213" y="140">1</text><text x="255" y="140">2</text><text x="297" y="140">3</text><text x="339" y="140">4</text><text x="381" y="140">5</text><text x="423" y="140">6</text><text x="465" y="140">7</text><text x="525" y="140">0</text><text x="567" y="140">1</text><text x="609" y="140">2</text><text x="651" y="140">3</text></g>
+<g fill="#e2e7ef"><rect x="150" y="151" width="336" height="40" rx="4"/><rect x="504" y="151" width="168" height="40" rx="4"/><rect x="150" y="198" width="336" height="40" rx="4"/><rect x="504" y="198" width="168" height="40" rx="4"/><rect x="150" y="245" width="336" height="40" rx="4"/><rect x="504" y="245" width="168" height="40" rx="4"/></g>
+<g fill="#9ed4bf"><rect x="150" y="151" width="294" height="40" rx="4"/><rect x="150" y="198" width="336" height="40" rx="4"/><rect x="504" y="245" width="168" height="40" rx="4"/></g>
+<g font-size="18"><text x="28" y="178">B 位置 6</text><text x="28" y="225">B 位置 7</text><text x="28" y="272">C 位置 3</text></g>
+<g stroke="#f5f7fb" stroke-width="2"><path d="M192 151V285M234 151V285M276 151V285M318 151V285M360 151V285M402 151V285M444 151V285M546 151V285M588 151V285M630 151V285"/></g>
+<text x="28" y="319" font-size="16">绿色：可见 KV　灰色：不可见；B 的第一条 query 不能看位置 7</text>
+<text x="28" y="344" font-size="14" fill="#52637a">教学示意：逻辑集合不代表真实稠密 mask、GPU 访存 trace 或安全隔离证明。</text>
+</g></svg>

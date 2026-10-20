@@ -662,6 +662,151 @@
           ]
         }
       ]
+    },
+    {
+      "date": "2026-10-20",
+      "lessons": [
+        {
+          "topic_id": "persistent-batch-compaction",
+          "title": "请求还没结束，为什么先从 persistent batch 消失",
+          "file": "daily/2026-10-20/01-persistent-batch-compaction.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "unscheduled_req_ids = cached_req_ids - (scheduled_req_ids - resumed_req_ids)",
+              "line": 1249
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "for req_id in scheduler_output.finished_req_ids:",
+              "line": 1205
+            },
+            {
+              "path": "vllm/v1/worker/gpu_input_batch.py",
+              "symbol": "def remove_request(self, req_id: str) -> int | None:",
+              "line": 525
+            },
+            {
+              "path": "vllm/v1/worker/gpu_input_batch.py",
+              "symbol": "def num_reqs(self) -> int:",
+              "line": 1108
+            },
+            {
+              "path": "vllm/v1/worker/gpu_input_batch.py",
+              "symbol": "def _register_add_request(self, request: \"CachedRequestState\") -> int:",
+              "line": 322
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "self.input_batch.condense()",
+              "line": 1514
+            },
+            {
+              "path": "vllm/v1/worker/gpu_input_batch.py",
+              "symbol": "def condense(self) -> None:",
+              "line": 703
+            },
+            {
+              "path": "vllm/v1/worker/block_table.py",
+              "symbol": "def move_row(self, src: int, tgt: int) -> None:",
+              "line": 185
+            }
+          ]
+        },
+        {
+          "topic_id": "row-state-permutation",
+          "title": "把 D 换到第一行，为什么不能只交换两个请求 ID",
+          "file": "daily/2026-10-20/02-row-state-permutation.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "def _may_reorder_batch(self, scheduler_output: \"SchedulerOutput\") -> None:",
+              "line": 1118
+            },
+            {
+              "path": "vllm/v1/attention/backends/utils.py",
+              "symbol": "has_context = num_computed_tokens_np > 0",
+              "line": 904
+            },
+            {
+              "path": "vllm/v1/worker/gpu_input_batch.py",
+              "symbol": "def swap_states(self, i1: int, i2: int) -> None:",
+              "line": 581
+            },
+            {
+              "path": "vllm/v1/worker/gpu_input_batch.py",
+              "symbol": "tmp_token_ids = self.token_ids_cpu[i1, :max_active_token_count].copy()",
+              "line": 626
+            },
+            {
+              "path": "vllm/v1/worker/gpu_input_batch.py",
+              "symbol": "self.block_table.swap_row(i1, i2)",
+              "line": 648
+            },
+            {
+              "path": "vllm/v1/worker/gpu_input_batch.py",
+              "symbol": "swap_dict_values(self.generators, i1, i2)",
+              "line": 686
+            },
+            {
+              "path": "vllm/v1/worker/gpu_input_batch.py",
+              "symbol": "self.batch_update_builder.moved.append((i1, i2, MoveDirectionality.SWAP))",
+              "line": 661
+            },
+            {
+              "path": "vllm/v1/worker/gpu_input_batch.py",
+              "symbol": "def refresh_metadata(self):",
+              "line": 836
+            }
+          ]
+        },
+        {
+          "topic_id": "output-layout-snapshots",
+          "title": "行号下一轮会变，旧结果怎样继续找到原来的请求",
+          "file": "daily/2026-10-20/03-output-layout-snapshots.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "req_ids_output_copy = self.input_batch.req_ids.copy()",
+              "line": 3707
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "output = ModelRunnerOutput(",
+              "line": 4747
+            },
+            {
+              "path": "vllm/v1/outputs.py",
+              "symbol": "class ModelRunnerOutput:",
+              "line": 261
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "req_index = model_runner_output.req_id_to_index[req_id]",
+              "line": 1976
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if request is None or request.is_finished():",
+              "line": 1962
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if output_is_stale and request.drop_stale_output:",
+              "line": 1973
+            }
+          ]
+        }
+      ]
     }
   ]
 }

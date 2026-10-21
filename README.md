@@ -38,6 +38,7 @@ vLLM 持续接收不同长度的请求，组织它们竞争计算预算和有限
 
 | 日期 | 三个相连的问题 | 源码版本 |
 | --- | --- | --- |
+| 2026-10-21 | [graph 尺寸与派发](daily/2026-10-21/01-graph-buckets-and-dispatch.md) → [padding 的副作用边界](daily/2026-10-21/02-padding-without-real-requests.md) → [replay 地址与值的生命周期](daily/2026-10-21/03-replay-address-and-value-lifetime.md) | [`04c1f4a40796`](https://github.com/vllm-project/vllm/tree/04c1f4a407962a37d01b573f3a2aba91dd2ed3a9) |
 | 2026-10-20 | [批次移除与补洞](daily/2026-10-20/01-persistent-batch-compaction.md) → [整组行状态重排](daily/2026-10-20/02-row-state-permutation.md) → [输出布局快照](daily/2026-10-20/03-output-layout-snapshots.md) | [`04c1f4a40796`](https://github.com/vllm-project/vllm/tree/04c1f4a407962a37d01b573f3a2aba91dd2ed3a9) |
 | 2026-10-19 | [本轮 query 展平](daily/2026-10-19/01-packed-query-inputs.md) → [逻辑位置到 KV slot](daily/2026-10-19/02-logical-position-to-kv-slot.md) → [上下文与因果边界](daily/2026-10-19/03-query-context-and-causal-boundaries.md) | [`04c1f4a40796`](https://github.com/vllm-project/vllm/tree/04c1f4a407962a37d01b573f3a2aba91dd2ed3a9) |
 | 2026-10-17 | [部分命中的有效边界](daily/2026-10-17/01-partial-prefix-hit-boundary.md) → [尾块写时复制](daily/2026-10-17/02-partial-tail-copy-on-write.md) → [GPU 复制与回收协议](daily/2026-10-17/03-cow-copy-and-reclamation.md) | [`04c1f4a40796`](https://github.com/vllm-project/vllm/tree/04c1f4a407962a37d01b573f3a2aba91dd2ed3a9) |

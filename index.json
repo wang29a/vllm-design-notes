@@ -807,6 +807,181 @@
           ]
         }
       ]
+    },
+    {
+      "date": "2026-10-21",
+      "lessons": [
+        {
+          "topic_id": "graph-buckets-and-dispatch",
+          "title": "真实工作只有三个 token，为什么还要选择四槽图和执行模式",
+          "file": "daily/2026-10-21/01-graph-buckets-and-dispatch.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/cudagraph_dispatcher.py",
+              "symbol": "def _compute_bs_to_padded_graph_size(self) -> None:",
+              "line": 71
+            },
+            {
+              "path": "vllm/config/compilation.py",
+              "symbol": "FULL_AND_PIECEWISE mode: Capture full cudagraph for decode batches and",
+              "line": 629
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "def _is_uniform_decode(",
+              "line": 3855
+            },
+            {
+              "path": "vllm/forward_context.py",
+              "symbol": "class BatchDescriptor:",
+              "line": 30
+            },
+            {
+              "path": "vllm/v1/cudagraph_dispatcher.py",
+              "symbol": "def _create_padded_batch_descriptor(",
+              "line": 130
+            },
+            {
+              "path": "vllm/v1/cudagraph_dispatcher.py",
+              "symbol": "if cudagraph_mode.mixed_mode() != CUDAGraphMode.NONE:",
+              "line": 187
+            },
+            {
+              "path": "vllm/v1/cudagraph_dispatcher.py",
+              "symbol": "if CUDAGraphMode.FULL in allowed_modes:",
+              "line": 305
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "cudagraph_mode, batch_descriptor = dispatch_cudagraph(",
+              "line": 3974
+            }
+          ]
+        },
+        {
+          "topic_id": "padding-without-real-requests",
+          "title": "两个 decode 请求补成四槽，空出来的行为什么不会写坏 KV",
+          "file": "daily/2026-10-21/02-padding-without-real-requests.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "self.query_start_loc.np[0] = 0",
+              "line": 2062
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "self.seq_lens[:num_reqs] = (",
+              "line": 2181
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "blk_table_tensor[num_reqs:num_reqs_padded].fill_(NULL_BLOCK_ID)",
+              "line": 2336
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "slot_mapping[num_tokens_unpadded:num_tokens_padded].fill_(-1)",
+              "line": 4115
+            },
+            {
+              "path": "csrc/libtorch_stable/cache_kernels.cu",
+              "symbol": "if (slot_idx < 0) {",
+              "line": 340
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "def _prepare_padding_mask(",
+              "line": 3474
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "logits_indices = query_start_loc[1:] - 1",
+              "line": 2233
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "sample_hidden_states = hidden_states[logits_indices]",
+              "line": 4463
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "pad_attn = cudagraph_mode == CUDAGraphMode.FULL",
+              "line": 4302
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "slot_mappings_by_group, slot_mappings = self._get_slot_mappings(",
+              "line": 4351
+            }
+          ]
+        },
+        {
+          "topic_id": "replay-address-and-value-lifetime",
+          "title": "请求与 token 都变了，为什么同一张图还能继续 replay",
+          "file": "daily/2026-10-21/03-replay-address-and-value-lifetime.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "self.input_ids = self._make_buffer(self.max_num_tokens, dtype=torch.int32)",
+              "line": 792
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "if self.input_batch.prev_sampled_token_ids is None:",
+              "line": 1790
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "input_ids = self.input_ids.gpu[:num_input_tokens]",
+              "line": 3601
+            },
+            {
+              "path": "vllm/compilation/cuda_graph.py",
+              "symbol": "def __call__(self, *args: Any, **kwargs: Any) -> Any | None:",
+              "line": 235
+            },
+            {
+              "path": "vllm/compilation/cuda_graph.py",
+              "symbol": "with torch.cuda.graph(",
+              "line": 315
+            },
+            {
+              "path": "vllm/compilation/cuda_graph.py",
+              "symbol": "entry.cudagraph.replay()",
+              "line": 362
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "set_cudagraph_capturing_enabled(False)",
+              "line": 6840
+            },
+            {
+              "path": "vllm/compilation/monitor.py",
+              "symbol": "def validate_cudagraph_capturing_enabled() -> None:",
+              "line": 90
+            },
+            {
+              "path": "vllm/compilation/cuda_graph.py",
+              "symbol": "entry.output = weak_ref_tensors(output)",
+              "line": 338
+            },
+            {
+              "path": "vllm/compilation/cuda_graph.py",
+              "symbol": "if self.is_debugging_mode:",
+              "line": 348
+            }
+          ]
+        }
+      ]
     }
   ]
 }

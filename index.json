@@ -982,6 +982,166 @@
           ]
         }
       ]
+    },
+    {
+      "date": "2026-10-22",
+      "lessons": [
+        {
+          "topic_id": "async-output-debt",
+          "title": "CPU 还不知道下一个 token，调度器为什么已经能安排下一轮",
+          "file": "daily/2026-10-22/01-async-output-debt.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/request.py",
+              "symbol": "def num_tokens_with_spec(self) -> int:",
+              "line": 295
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "num_new_tokens = (",
+              "line": 650
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "request.num_computed_tokens += num_scheduled_token",
+              "line": 1578
+            },
+            {
+              "path": "vllm/v1/core/sched/async_scheduler.py",
+              "symbol": "request.num_output_placeholders += (",
+              "line": 39
+            },
+            {
+              "path": "vllm/v1/core/sched/async_scheduler.py",
+              "symbol": "def _update_request_with_output(",
+              "line": 51
+            },
+            {
+              "path": "vllm/v1/core/sched/async_scheduler.py",
+              "symbol": "self.kv_cache_manager.cache_blocks(",
+              "line": 67
+            },
+            {
+              "path": "vllm/config/vllm.py",
+              "symbol": "def max_concurrent_batches(self) -> int:",
+              "line": 589
+            },
+            {
+              "path": "vllm/v1/engine/core.py",
+              "symbol": "batch_queue.appendleft((future, scheduler_output, exec_future))",
+              "line": 729
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if (",
+              "line": 611
+            }
+          ]
+        },
+        {
+          "topic_id": "device-token-handoff",
+          "title": "CPU 缓冲里还是占位符，下一轮输入怎样拿到真实采样 token",
+          "file": "daily/2026-10-22/02-device-token-handoff.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "if self.input_batch.prev_sampled_token_ids is None:",
+              "line": 3747
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "if self.use_async_scheduling:",
+              "line": 3763
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "def _compute_prev_positions(self, num_reqs: int) -> None:",
+              "line": 1754
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "for cur_index in range(num_reqs):",
+              "line": 1811
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "if num_common_tokens < total_without_spec:",
+              "line": 1851
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "if common_indices_match and max_flattened_index == (num_common_tokens - 1):",
+              "line": 1861
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "self.input_ids.gpu.scatter_(",
+              "line": 1878
+            }
+          ]
+        },
+        {
+          "topic_id": "async-output-copy-lifetime",
+          "title": "下一轮已经准备好了，上一轮 CPU 输出为什么还得等一个事件",
+          "file": "daily/2026-10-22/03-async-output-copy-lifetime.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "async_output = AsyncGPUModelRunnerOutput(",
+              "line": 4767
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "self._sampled_token_ids = sampled_token_ids",
+              "line": 302
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "async_output_copy_stream.wait_stream(default_stream)",
+              "line": 311
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "self.async_copy_ready_event.record()",
+              "line": 328
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "def get_output(self) -> ModelRunnerOutput:",
+              "line": 330
+            },
+            {
+              "path": "vllm/v1/executor/uniproc_executor.py",
+              "symbol": "try:",
+              "line": 108
+            },
+            {
+              "path": "vllm/v1/executor/uniproc_executor.py",
+              "symbol": "def result(self, timeout=None):",
+              "line": 38
+            },
+            {
+              "path": "vllm/v1/engine/core.py",
+              "symbol": "future, scheduler_output, exec_model_fut = batch_queue.pop()",
+              "line": 744
+            },
+            {
+              "path": "vllm/v1/worker/gpu_input_batch.py",
+              "symbol": "def update_async_output_token_ids(self) -> None:",
+              "line": 1042
+            }
+          ]
+        }
+      ]
     }
   ]
 }

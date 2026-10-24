@@ -1142,6 +1142,161 @@
           ]
         }
       ]
+    },
+    {
+      "date": "2026-10-24",
+      "lessons": [
+        {
+          "topic_id": "grammar-compilation-admission",
+          "title": "grammar 还在编译，请求为什么不能直接进入 prefill",
+          "file": "daily/2026-10-24/01-grammar-compilation-admission.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/request.py",
+              "symbol": "if self.structured_output_request is not None:",
+              "line": 114
+            },
+            {
+              "path": "vllm/v1/engine/core.py",
+              "symbol": "req = Request.from_engine_core_request(request, self.request_block_hasher)",
+              "line": 1064
+            },
+            {
+              "path": "vllm/v1/structured_output/__init__.py",
+              "symbol": "if self._use_async_grammar_compilation:",
+              "line": 168
+            },
+            {
+              "path": "vllm/v1/structured_output/request.py",
+              "symbol": "def _check_grammar_completion(self) -> bool:",
+              "line": 44
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if request.status == RequestStatus.WAITING_FOR_STRUCTURED_OUTPUT_GRAMMAR:",
+              "line": 3025
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if self._is_blocked_waiting_status(",
+              "line": 868
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "error_req_ids = set(self.grammar_compile_error_reqs)",
+              "line": 2168
+            },
+            {
+              "path": "vllm/v1/structured_output/backend_xgrammar.py",
+              "symbol": "return XgrammarGrammar(",
+              "line": 123
+            },
+            {
+              "path": "vllm/v1/structured_output/__init__.py",
+              "symbol": "self._use_async_grammar_compilation = (",
+              "line": 53
+            }
+          ]
+        },
+        {
+          "topic_id": "async-grammar-sampling-barrier",
+          "title": "grammar 已经编译好，为什么 forward 能先跑而采样还要等",
+          "file": "daily/2026-10-24/02-async-grammar-sampling-barrier.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/core/sched/async_scheduler.py",
+              "symbol": "scheduler_output.pending_structured_output_tokens |= (",
+              "line": 31
+            },
+            {
+              "path": "vllm/v1/engine/core.py",
+              "symbol": "exec_future = self.model_executor.execute_model(",
+              "line": 703
+            },
+            {
+              "path": "vllm/v1/engine/core.py",
+              "symbol": "if not scheduler_output.pending_structured_output_tokens:",
+              "line": 713
+            },
+            {
+              "path": "vllm/v1/engine/core.py",
+              "symbol": "future, scheduler_output, exec_model_fut = batch_queue.pop()",
+              "line": 744
+            },
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "if new_token_ids and not self.structured_output_manager.accept_tokens(",
+              "line": 2057
+            },
+            {
+              "path": "vllm/v1/structured_output/backend_xgrammar.py",
+              "symbol": "def accept_tokens(self, request_id: str, tokens: list[int]) -> bool:",
+              "line": 157
+            },
+            {
+              "path": "vllm/v1/engine/core.py",
+              "symbol": "grammar_output = self.scheduler.get_grammar_bitmask(",
+              "line": 781
+            },
+            {
+              "path": "vllm/v1/worker/gpu_model_runner.py",
+              "symbol": "if grammar_output is not None:",
+              "line": 4562
+            }
+          ]
+        },
+        {
+          "topic_id": "grammar-mask-row-alignment",
+          "title": "合法 token 集合算对了，为什么仍可能约束错请求",
+          "file": "daily/2026-10-24/03-grammar-mask-row-alignment.md",
+          "source_commit": "04c1f4a407962a37d01b573f3a2aba91dd2ed3a9",
+          "evidence": "static_source_review",
+          "status": "complete",
+          "sources": [
+            {
+              "path": "vllm/v1/core/sched/scheduler.py",
+              "symbol": "def get_grammar_bitmask(",
+              "line": 1876
+            },
+            {
+              "path": "vllm/v1/structured_output/backend_xgrammar.py",
+              "symbol": "def fill_bitmask(self, bitmask: torch.Tensor, idx: int) -> None:",
+              "line": 208
+            },
+            {
+              "path": "vllm/v1/structured_output/__init__.py",
+              "symbol": "bitmask_tensor = self._grammar_bitmask",
+              "line": 429
+            },
+            {
+              "path": "vllm/v1/structured_output/utils.py",
+              "symbol": "struct_out_req_batch_indices: dict[str, int] = {}",
+              "line": 129
+            },
+            {
+              "path": "vllm/v1/structured_output/utils.py",
+              "symbol": "sorted_bitmask_tensor = torch.full(",
+              "line": 142
+            },
+            {
+              "path": "vllm/v1/structured_output/utils.py",
+              "symbol": "for req_id in grammar_output.structured_output_request_ids:",
+              "line": 150
+            },
+            {
+              "path": "vllm/v1/structured_output/utils.py",
+              "symbol": "grammar_bitmask = sorted_bitmask_tensor.to(logits.device, non_blocking=True)",
+              "line": 160
+            }
+          ]
+        }
+      ]
     }
   ]
 }

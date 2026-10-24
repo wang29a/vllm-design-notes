@@ -38,6 +38,7 @@ vLLM 持续接收不同长度的请求，组织它们竞争计算预算和有限
 
 | 日期 | 三个相连的问题 | 源码版本 |
 | --- | --- | --- |
+| 2026-10-24 | [grammar 编译与准入](daily/2026-10-24/01-grammar-compilation-admission.md) → [异步采样状态屏障](daily/2026-10-24/02-async-grammar-sampling-barrier.md) → [掩码与 logits 行对齐](daily/2026-10-24/03-grammar-mask-row-alignment.md) | [`04c1f4a40796`](https://github.com/vllm-project/vllm/tree/04c1f4a407962a37d01b573f3a2aba91dd2ed3a9) |
 | 2026-10-22 | [异步输出数量占位](daily/2026-10-22/01-async-output-debt.md) → [设备采样值衔接输入](daily/2026-10-22/02-device-token-handoff.md) → [输出拷贝事件与生命周期](daily/2026-10-22/03-async-output-copy-lifetime.md) | [`04c1f4a40796`](https://github.com/vllm-project/vllm/tree/04c1f4a407962a37d01b573f3a2aba91dd2ed3a9) |
 | 2026-10-21 | [graph 尺寸与派发](daily/2026-10-21/01-graph-buckets-and-dispatch.md) → [padding 的副作用边界](daily/2026-10-21/02-padding-without-real-requests.md) → [replay 地址与值的生命周期](daily/2026-10-21/03-replay-address-and-value-lifetime.md) | [`04c1f4a40796`](https://github.com/vllm-project/vllm/tree/04c1f4a407962a37d01b573f3a2aba91dd2ed3a9) |
 | 2026-10-20 | [批次移除与补洞](daily/2026-10-20/01-persistent-batch-compaction.md) → [整组行状态重排](daily/2026-10-20/02-row-state-permutation.md) → [输出布局快照](daily/2026-10-20/03-output-layout-snapshots.md) | [`04c1f4a40796`](https://github.com/vllm-project/vllm/tree/04c1f4a407962a37d01b573f3a2aba91dd2ed3a9) |
